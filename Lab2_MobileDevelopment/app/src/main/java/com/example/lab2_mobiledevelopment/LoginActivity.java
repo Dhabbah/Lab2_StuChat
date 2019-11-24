@@ -53,15 +53,24 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordView.getText().toString();
 
         // check for a valid password
-
+        if(email.matches("")){
+            Toast.makeText(this, "You need to enter an email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(password.matches("")){
+            Toast.makeText(this, "You need to enter a password", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(!TextUtils.isEmpty(password) && !checkValidPassword(password)){
             passwordView.setError("Password must be at least 5 characters");
         }
 
+
         if(!checkValidEmail(email) && !TextUtils.isEmpty(email)){
             emailView.setError("Your email is not valid");
-            Toast.makeText(this, "Your email is invalid",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Your email is invalid",Toast.LENGTH_SHORT).show();
         }
+
 
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -94,8 +103,8 @@ public class LoginActivity extends AppCompatActivity {
         Intent redirect = new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(redirect);
     }
-    public void redirectToForgotPasswordPage(View view){
-        Intent redirect = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-        startActivity(redirect);
-    }
+//    public void redirectToForgotPasswordPage(View view){
+//        Intent redirect = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+//        startActivity(redirect);
+//    }
 }
