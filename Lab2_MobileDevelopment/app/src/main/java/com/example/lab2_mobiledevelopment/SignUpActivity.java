@@ -22,12 +22,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -37,7 +41,9 @@ public class SignUpActivity extends AppCompatActivity {
     Bitmap userphoto = null;
 
     private FirebaseAuth auth;
-    private EditText userEmail, userPassword;
+    DatabaseReference reference;
+
+    private EditText userEmail, userPassword, FirstName, LastName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,8 @@ public class SignUpActivity extends AppCompatActivity {
         userImage = (ImageView) findViewById(R.id.UserImage);
         userEmail = (EditText) findViewById(R.id.signup_email);
         userPassword = (EditText) findViewById(R.id.signup_password);
+        FirstName = (EditText) findViewById(R.id.signup_firstname);
+        LastName = (EditText) findViewById(R.id.signup_lastname);
         auth = FirebaseAuth.getInstance();
 
     }
@@ -147,6 +155,8 @@ public class SignUpActivity extends AppCompatActivity {
         // add the sign up details to firebase
         String email = userEmail.getText().toString().trim();
         String password = userPassword.getText().toString().trim();
+        final String Firstname = FirstName.getText().toString().trim();
+        final String Lastname = LastName.getText().toString().trim();
 
         if(TextUtils.isEmpty(email)){
             Toast.makeText(getApplicationContext(), "please enter your email address!", Toast.LENGTH_SHORT).show();
@@ -171,18 +181,35 @@ public class SignUpActivity extends AppCompatActivity {
                 .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Toast.makeText(SignUpActivity.this, "Create user complete" + task.isSuccessful(),Toast.LENGTH_SHORT).show();
-
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
 
-                        if(!task.isSuccessful()){
-                            Toast.makeText(SignUpActivity.this, "Failed to create account" + task.getException(), Toast.LENGTH_SHORT).show();
+
+                        if(task.isSuccessful()){
+                            FirebaseUser firebaseUser = auth.getCurrentUser();
+                            String userid = firebaseUser.getUid();
+
+                            reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+
+                            HashMap<String, String> hashMap = new HashMap<>();
+                            hashMap.put("id", userid);
+                            hashMap.put("Firstname", Firstname);
+                            hashMap.put("Lastname", Lastname);
+
+                            reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        Toast.makeText(SignUpActivity.this, "Create user complete" + task.isSuccessful(),Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                                        finish();
+                                    }
+                                }
+                            });
                         }
                         else{
-                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-                            finish();
+                            Toast.makeText(SignUpActivity.this, "Failed to create account" + task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
