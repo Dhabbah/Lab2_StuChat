@@ -96,7 +96,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public boolean checkValidEmail(String email){
+
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+
     }
 
     public void redirectToSignUpPage(View view){

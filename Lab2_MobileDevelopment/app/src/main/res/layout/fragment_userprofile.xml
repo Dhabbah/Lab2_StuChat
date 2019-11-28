@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/gradient">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        app:cardElevation="12dp">
+        <ImageView
+            android:layout_width="359dp"
+            android:layout_height="222dp"
+            android:id="@+id/user_Image"
+            android:padding="12dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/camera"
+            />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/profile_firstname"
+        android:layout_centerInParent="true"
+         />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/profile_lastname"
+        android:layout_below="@id/profile_firstname"
+        android:layout_centerInParent="true"
+        />
+
+
+</RelativeLayout>

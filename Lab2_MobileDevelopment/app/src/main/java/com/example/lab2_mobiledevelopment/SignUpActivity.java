@@ -22,6 +22,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
@@ -71,7 +72,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Uri imageUri;
     Map<String, Object> users;
 
-    private EditText userEmail, userPassword, FirstName, LastName;
+    private EditText userEmail, userPassword, FirstName, LastName, PhoneNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +83,7 @@ public class SignUpActivity extends AppCompatActivity {
         userPassword = (EditText) findViewById(R.id.signup_password);
         FirstName = (EditText) findViewById(R.id.signup_firstname);
         LastName = (EditText) findViewById(R.id.signup_lastname);
+        PhoneNumber = (EditText) findViewById(R.id.signup_phonenumber);
         auth = FirebaseAuth.getInstance();
 
 
@@ -187,7 +189,11 @@ public class SignUpActivity extends AppCompatActivity {
         this.userphoto = thumbnail;
         userImage.setImageBitmap(thumbnail);
     }
+    public boolean checkValidPhoneNumber(String phonenumber){
 
+        return Patterns.PHONE.matcher(phonenumber).matches();
+
+    }
     public void onSignUp(View v){
 
         // add the sign up details to firebase
@@ -195,8 +201,12 @@ public class SignUpActivity extends AppCompatActivity {
         String password = userPassword.getText().toString().trim();
         final String Firstname = FirstName.getText().toString().trim();
         final String Lastname = LastName.getText().toString().trim();
+        final String Phonenumber = PhoneNumber.getText().toString().trim();
         //final String Uri_image = imageUri.toString().trim();
-
+        if(!checkValidPhoneNumber(Phonenumber) && !TextUtils.isEmpty(Phonenumber)){
+            Toast.makeText(getApplicationContext(), "please enter your phone number in digits!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(TextUtils.isEmpty(email)){
             Toast.makeText(getApplicationContext(), "please enter your email address!", Toast.LENGTH_SHORT).show();
             return;
@@ -249,9 +259,10 @@ public class SignUpActivity extends AppCompatActivity {
                                                         users = new HashMap<>();
 
                                                         users.put("Id", userid);
-                                                        users.put("First Name", Firstname);
-                                                        users.put("Last Name", Lastname);
-                                                        users.put("Image Url", url);
+                                                        users.put("firstName", Firstname);
+                                                        users.put("lastName", Lastname);
+                                                        users.put("imageUrl", url);
+                                                        users.put("phoneNumber", Phonenumber);
                                                         databaseReference.setValue(users);
 
                                                     }

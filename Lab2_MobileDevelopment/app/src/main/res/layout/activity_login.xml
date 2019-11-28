@@ -77,7 +77,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@null"
-            android:onClick="redirectToForgotPasswordPage"
             android:text="forgot_password"
             android:textAllCaps="false"
             android:textColor="@android:color/holo_blue_dark" />
