@@ -62,33 +62,33 @@ public class SignUpActivity extends AppCompatActivity {
 
     int REQUEST_CAMERA = 0;
     int SELECT_FILE = 1;
-    ImageView userImage;
-    Bitmap userphoto = null;
+    ImageView stu_userImage;
+    Bitmap stu_userphoto = null;
 
-    private FirebaseAuth auth;
-    private DatabaseReference databaseReference;
-    private StorageReference storageReference;
+    private FirebaseAuth stu_auth;
+    private DatabaseReference stu_databaseReference;
+    private StorageReference stu_storageReference;
     private StorageTask uploadTask;
-    private Uri imageUri;
-    User user;
-    Map<String, Object> users;
+    private Uri stu_imageUri;
+    User stu_user;
 
-    private EditText userEmail, userPassword, FirstName, LastName, PhoneNumber;
+
+    private EditText stu_userEmail, stu_userPassword, stu_FirstName, stu_LastName, stu_PhoneNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        userImage = (ImageView) findViewById(R.id.UserImage);
-        userEmail = (EditText) findViewById(R.id.signup_email);
-        userPassword = (EditText) findViewById(R.id.signup_password);
-        FirstName = (EditText) findViewById(R.id.signup_firstname);
-        LastName = (EditText) findViewById(R.id.signup_lastname);
-        PhoneNumber = (EditText) findViewById(R.id.signup_phonenumber);
-        auth = FirebaseAuth.getInstance();
+        stu_userImage = (ImageView) findViewById(R.id.UserImage);
+        stu_userEmail = (EditText) findViewById(R.id.signup_email);
+        stu_userPassword = (EditText) findViewById(R.id.signup_password);
+        stu_FirstName = (EditText) findViewById(R.id.signup_firstname);
+        stu_LastName = (EditText) findViewById(R.id.signup_lastname);
+        stu_PhoneNumber = (EditText) findViewById(R.id.signup_phonenumber);
+        stu_auth = FirebaseAuth.getInstance();
 
 
-        storageReference = FirebaseStorage.getInstance().getReference("uploads");
+        stu_storageReference = FirebaseStorage.getInstance().getReference("uploads");
     }
 
     public void onClickPhotoButton(View v){
@@ -146,20 +146,20 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void onSelecFromGalleryResult(Intent data){
 
-        Bitmap bm = null;
+        Bitmap Mybitmap = null;
 
         if(data != null){
             try{
 
-                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                Mybitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
             }catch (IOException e){
                 e.printStackTrace();
             }
         }
-        imageUri = data.getData(); // added
-        this.userphoto = bm;
+        stu_imageUri = data.getData(); // added
+        this.stu_userphoto = Mybitmap;
 
-        userImage.setImageBitmap(bm);
+        stu_userImage.setImageBitmap(Mybitmap);
     }
     private String getFileExtensions(Uri uri){
         ContentResolver cr = getContentResolver();
@@ -169,7 +169,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void onCaptureImageResult(Intent data){
         Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        imageUri = data.getData();
+        stu_imageUri = data.getData();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
@@ -187,8 +187,8 @@ public class SignUpActivity extends AppCompatActivity {
         }catch (IOException e){
             e.printStackTrace();
         }
-        this.userphoto = thumbnail;
-        userImage.setImageBitmap(thumbnail);
+        this.stu_userphoto = thumbnail;
+        stu_userImage.setImageBitmap(thumbnail);
     }
 //    public boolean checkValidPhoneNumber(String phonenumber){
 //
@@ -199,26 +199,26 @@ public class SignUpActivity extends AppCompatActivity {
     public void onSignUp(View v){
 
         // add the sign up details to firebase
-        String email = userEmail.getText().toString().trim();
-        String password = userPassword.getText().toString().trim();
-        final String Firstname = FirstName.getText().toString().trim();
-        final String Lastname = LastName.getText().toString().trim();
-        final String Phonenumber = PhoneNumber.getText().toString().trim();
+        String stu_email = stu_userEmail.getText().toString().trim();
+        String stu_password = stu_userPassword.getText().toString().trim();
+        final String stu_Firstname = stu_FirstName.getText().toString().trim();
+        final String stu_Lastname = stu_LastName.getText().toString().trim();
+        final String stu_Phonenumber = stu_PhoneNumber.getText().toString().trim();
         //final String Uri_image = imageUri.toString().trim();
-        if(TextUtils.isEmpty(Phonenumber)){
+        if(TextUtils.isEmpty(stu_Phonenumber)){
             Toast.makeText(getApplicationContext(), "please enter your phone number in digits!", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(email)){
-            Toast.makeText(getApplicationContext(), "please enter your email address!", Toast.LENGTH_SHORT).show();
+        if(TextUtils.isEmpty(stu_email)){
+            Toast.makeText(getApplicationContext(), "please enter your stu_email address!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(TextUtils.isEmpty(password)){
+        if(TextUtils.isEmpty(stu_password)){
             Toast.makeText(getApplicationContext(), "Please enter password", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(password.length() < 6 ){
+        if(stu_password.length() < 6 ){
             Toast.makeText(getApplicationContext(), "Password is too short, enter minimum 6 characters", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -228,7 +228,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         //create user
 
-        auth.createUserWithEmailAndPassword(email, password)
+        stu_auth.createUserWithEmailAndPassword(stu_email, stu_password)
                 .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -239,33 +239,28 @@ public class SignUpActivity extends AppCompatActivity {
 
                         if(task.isSuccessful()){
 
-                            FirebaseUser firebaseUser = auth.getCurrentUser();
-                            final String userid = firebaseUser.getUid();
-                            databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+                            FirebaseUser firebaseUser = stu_auth.getCurrentUser();
+                            final String stu_userid = firebaseUser.getUid();
+                            stu_databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(stu_userid);
 
-                            if (imageUri != null) {
-                                StorageReference fileReference = storageReference.child(System.currentTimeMillis()
-                                        + "." + getFileExtensions(imageUri));
+                            if (stu_imageUri != null) {
+                                StorageReference fileReference = stu_storageReference.child(System.currentTimeMillis()
+                                        + "." + getFileExtensions(stu_imageUri));
 
-                                uploadTask = fileReference.putFile(imageUri)
+                                uploadTask = fileReference.putFile(stu_imageUri)
                                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                             @Override
                                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                stu_storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                     @Override
                                                     public void onSuccess(Uri uri) {
                                                         String url = uri.toString();
 
                                                         Toast.makeText(SignUpActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
 
-                                                        //users = new HashMap<>();
-                                                        user = new User(userid, Firstname, Lastname, url, Phonenumber);
-//                                                        users.put("Id", userid);
-//                                                        users.put("firstName", Firstname);
-//                                                        users.put("lastName", Lastname);
-//                                                        users.put("imageUrl", url);
-                                                        //users.put("phoneNumber", Phonenumber);
-                                                        databaseReference.setValue(user);
+                                                        stu_user = new User(stu_userid, stu_Firstname, stu_Lastname, url, stu_Phonenumber);
+
+                                                        stu_databaseReference.setValue(stu_user);
 
                                                     }
                                                 });
@@ -279,9 +274,12 @@ public class SignUpActivity extends AppCompatActivity {
                                             }
                                         });
                             } else {
+
+                                stu_user = new User(stu_userid, stu_Firstname, stu_Lastname, "Default", stu_Phonenumber);
+                                stu_databaseReference.setValue(stu_user);
                                 Toast.makeText(SignUpActivity.this, "No file selected", Toast.LENGTH_SHORT).show();
                             }
-                            databaseReference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            stu_databaseReference.setValue(stu_user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){

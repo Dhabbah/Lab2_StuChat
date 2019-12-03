@@ -40,14 +40,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         final User user = mUsers.get(position);
         holder.username.setText((user.getFirstname() + " " + user.getLastname()));
 
-//        if(user.getImageURL().equals("default")){
-//            holder.profile_image.setImageResource(R.mipmap.avatar6);
-//        } else {
-//            Glide.with(mContext).load(user.getImageURL()).into(holder.profile_image);
-//        }
-        if(!user.getImageURL().equals(null)){
+
+        if(user.getImageURL().equals("Default")){
+            holder.profile_image.setImageResource(R.mipmap.avatar6);
+        }
+        else if(!user.getImageURL().equals(null)){
             Glide.with(mContext).load(user.getImageURL()).into(holder.profile_image);
         }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

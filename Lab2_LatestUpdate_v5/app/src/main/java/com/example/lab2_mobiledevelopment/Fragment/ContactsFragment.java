@@ -37,28 +37,28 @@ import java.util.List;
 
 public class ContactsFragment extends Fragment {
 
-    private ListView listView;
+    private ListView stu_listView;
 
-    Contact contact;
-    User user;
-    String contactStatus;
+    Contact stu_contact;
+    User stu_user;
+    String stu_contactStatus;
     //List<User> mUsers;
-    ArrayList<Contact> arrayListContacts;
+    ArrayList<Contact> stu_arrayListContacts;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_contacts, container, false);
-        listView = view.findViewById(R.id.listview_Contacts);
+        View stu_View = inflater.inflate(R.layout.fragment_contacts, container, false);
+        stu_listView = stu_View.findViewById(R.id.listview_Contacts);
 
         get();
 //        recyclerView.setHasFixedSize(true);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 //        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL)); //line
 
-        return view;
+        return stu_View;
 
     }
 
     public void get(){
-        arrayListContacts = new ArrayList<Contact>();
+        stu_arrayListContacts = new ArrayList<Contact>();
         //mUsers = new ArrayList<>(); Not being use
 
         //Get all contacts
@@ -74,30 +74,30 @@ public class ContactsFragment extends Fragment {
 
         if(cursorContacts.getCount() > 0){
             while (cursorContacts.moveToNext()){
-                contact = new Contact();
-                String contactId = cursorContacts.getString(cursorContacts.getColumnIndex(ContactsContract.Contacts._ID));
-                String contactDisplayName = cursorContacts.getString(cursorContacts.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                contactStatus = "Active";
-                contact.contactName = contactDisplayName;
+                stu_contact = new Contact();
+                String stu_contactId = cursorContacts.getString(cursorContacts.getColumnIndex(ContactsContract.Contacts._ID));
+                String stu_contactDisplayName = cursorContacts.getString(cursorContacts.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                stu_contactStatus = "Active";
+                stu_contact.contactName = stu_contactDisplayName;
 
-                int hasPhoneNumber = Integer.parseInt(cursorContacts.getString(cursorContacts.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
-                if(hasPhoneNumber > 0){
+                int stu_hasPhoneNumber = Integer.parseInt(cursorContacts.getString(cursorContacts.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
+                if(stu_hasPhoneNumber > 0){
 
                     Cursor phoneCursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI
                     , null
                     , ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " =?"
-                    , new String[]{contactId}
+                    , new String[]{stu_contactId}
                     , null);
 
                     while (phoneCursor.moveToNext()){
                         String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-                        contact.contactTelephoneNumber = phoneNumber;
+                        stu_contact.contactTelephoneNumber = phoneNumber;
                     }
                     phoneCursor.close();
                 }
 
-                arrayListContacts.add(contact);
+                stu_arrayListContacts.add(stu_contact);
 
             }
 
@@ -107,27 +107,23 @@ public class ContactsFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
-                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    for(DataSnapshot stu_snapshot : dataSnapshot.getChildren()){
 
-                        user = snapshot.getValue(User.class);
+                        stu_user = stu_snapshot.getValue(User.class);
 
-//                        System.out.println(user.getPhonenumber());
-//                        System.out.println(contact.contactTelephoneNumber.replaceAll("[-() ]+", ""));
-                        if(user.getPhonenumber().equals(contact.contactTelephoneNumber.replaceAll("[-() ]+", ""))){
-                            //System.out.println("Yikes");
-                            contact.contactStatus = contactStatus;
+                        if(stu_user.getPhonenumber().equals(stu_contact.contactTelephoneNumber.replaceAll("[-() ]+", ""))){
+
+                            stu_contact.contactStatus = stu_contactStatus;
 
 
                         }
                         else {
-                            contact.contactStatus = "Not Register";
+                            stu_contact.contactStatus = "Not Register";
                         }
-                        AdapterContacts adapterContacts = new AdapterContacts(getContext(), arrayListContacts);
-                        listView.setAdapter(adapterContacts);
+                        AdapterContacts stu_adapterContacts = new AdapterContacts(getContext(), stu_arrayListContacts);
+                        stu_listView.setAdapter(stu_adapterContacts);
 
                     }
-//                    AdapterContacts adapterContacts = new AdapterContacts(getContext(), arrayListContacts);
-//                    listView.setAdapter(adapterContacts);
 
 
                 }

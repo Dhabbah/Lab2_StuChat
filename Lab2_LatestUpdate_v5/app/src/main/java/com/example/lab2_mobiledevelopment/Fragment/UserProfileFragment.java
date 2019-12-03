@@ -24,38 +24,35 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserProfileFragment extends Fragment {
 // This fragment is only to show the user profile who signed in
-    CircleImageView mImageProfile;
-    TextView mUsername;
+    CircleImageView stu_mImageProfile;
+    TextView stu_mUsername;
 
-    DatabaseReference reference;
-    FirebaseUser fuser;
+    DatabaseReference stu_reference;
+    FirebaseUser stu_fuser;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_userprofile, container, false);
+        View stu_view = inflater.inflate(R.layout.fragment_userprofile, container, false);
 
-        mImageProfile = view.findViewById(R.id.profile_image);
-        mUsername = view.findViewById(R.id.username);
+        stu_mImageProfile = stu_view.findViewById(R.id.profile_image);
+        stu_mUsername = stu_view.findViewById(R.id.username);
 
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users")
-                .child(fuser.getUid());
+        stu_fuser = FirebaseAuth.getInstance().getCurrentUser();
+        stu_reference = FirebaseDatabase.getInstance().getReference("Users")
+                .child(stu_fuser.getUid());
 
-        reference.addValueEventListener(new ValueEventListener() {
+        stu_reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                mUsername.setText(user.getFirstname() + " " + user.getLastname());
+                User stu_user = dataSnapshot.getValue(User.class);
+                stu_mUsername.setText(stu_user.getFirstname() + " " + stu_user.getLastname());
 
-//                if (user.getImageURL().equals("default")) {
-////                    mImageProfile.setImageResource(R.mipmap.avatar6);
-////
-////                } else {
-////                    Glide.with(getContext()).load(user.getImageURL()).into(mImageProfile);
-////
-////                }
-                if(!user.getImageURL().equals(null)){
-                    Glide.with(getContext()).load(user.getImageURL()).into(mImageProfile);
+                if(stu_user.getImageURL().equals("Default")){
+                    stu_mImageProfile.setImageResource(R.mipmap.avatar6);
                 }
+                else if(!stu_user.getImageURL().equals(null)){
+                    Glide.with(getContext()).load(stu_user.getImageURL()).into(stu_mImageProfile);
+                }
+
             }
 
             @Override
@@ -64,6 +61,6 @@ public class UserProfileFragment extends Fragment {
             }
         });
 
-        return view;
+        return stu_view;
     }
 }

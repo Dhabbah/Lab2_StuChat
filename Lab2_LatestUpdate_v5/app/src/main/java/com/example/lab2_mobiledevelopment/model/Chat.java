@@ -1,40 +1,40 @@
 package com.example.lab2_mobiledevelopment.model;
 
 public class Chat {
-    private  String sender;
-    private String receiver;
-    private String message;
+    private  String stu_sender;
+    private String stu_receiver;
+    private String stu_message;
 
-    public Chat(String sender, String receiver, String message) {
-        this.sender = sender;
-        this.receiver = receiver;
-        this.message = message;
+    public Chat(String stu_sender, String stu_receiver, String stu_message) {
+        this.stu_sender = stu_sender;
+        this.stu_receiver = stu_receiver;
+        this.stu_message = stu_message;
     }
 
     public Chat() {
     }
 
     public String getSender() {
-        return sender;
+        return stu_sender;
     }
 
-    public void setSender(String sender) {
-        this.sender = sender;
+    public void setSender(String stu_sender) {
+        this.stu_sender = stu_sender;
     }
 
     public String getReceiver() {
-        return receiver;
+        return stu_receiver;
     }
 
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
+    public void setReceiver(String stu_receiver) {
+        this.stu_receiver = stu_receiver;
     }
 
     public String getMessage() {
-        return message;
+        return stu_message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMessage(String stu_message) {
+        this.stu_message = stu_message;
     }
 }

@@ -52,14 +52,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         Chat chat = mChat.get(position);
 
         holder.show_message.setText(chat.getMessage());
-//        if(imageURL.equals("default")){
-//            holder.profile_image.setImageResource(R.mipmap.avatar6);
-//        } else {
-//            Glide.with(mContext).load(imageURL).into(holder.profile_image);
-//        }
-        if(!imageURL.equals(null)){
+
+        if(imageURL.equals("Default")){
+            holder.profile_image.setImageResource(R.mipmap.avatar6);
+        }
+        else if(!imageURL.equals(null)){
             Glide.with(mContext).load(imageURL).into(holder.profile_image);
         }
+
     }
 
     @Override

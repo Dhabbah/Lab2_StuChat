@@ -24,25 +24,25 @@ import java.time.Instant;
 public class LoginActivity extends AppCompatActivity {
 
     private static final int REQUEST_READ_CONTACTS = 0;
-    private FirebaseAuth auth;
+    private FirebaseAuth stu_auth;
 
     // UI references
-    private AutoCompleteTextView emailView;
-    private EditText passwordView;
-    FirebaseUser firebaseUser;
+    private AutoCompleteTextView stu_emailView;
+    private EditText stu_passwordView;
+    FirebaseUser stu_firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        auth = FirebaseAuth.getInstance();
+        stu_auth = FirebaseAuth.getInstance();
 
-        emailView = (AutoCompleteTextView) findViewById(R.id.email);
-        passwordView = (EditText) findViewById(R.id.login_password);
+        stu_emailView = (AutoCompleteTextView) findViewById(R.id.email);
+        stu_passwordView = (EditText) findViewById(R.id.login_password);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        stu_firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         // if the user signed in already it will go to the mainactivity.
-        if(firebaseUser != null){
+        if(stu_firebaseUser != null){
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -55,35 +55,35 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void Login(View view){
         //Reset errors
-        emailView.setError(null);
-        passwordView.setError(null);
+        stu_emailView.setError(null);
+        stu_passwordView.setError(null);
 
         // Store values at the time when user try to login
 
-        String email = emailView.getText().toString();
-        String password = passwordView.getText().toString();
+        String stu_email = stu_emailView.getText().toString();
+        String stu_password = stu_passwordView.getText().toString();
 
         // check for a valid password
-        if(email.matches("")){
+        if(stu_email.matches("")){
             Toast.makeText(this, "You need to enter an email", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(password.matches("")){
+        if(stu_password.matches("")){
             Toast.makeText(this, "You need to enter a password", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(!TextUtils.isEmpty(password) && !checkValidPassword(password)){
-            passwordView.setError("Password must be at least 5 characters");
+        if(!TextUtils.isEmpty(stu_password) && !checkValidPassword(stu_password)){
+            stu_passwordView.setError("Password must be at least 5 characters");
         }
 
 
-        if(!checkValidEmail(email) && !TextUtils.isEmpty(email)){
-            emailView.setError("Your email is not valid");
-            //Toast.makeText(this, "Your email is invalid",Toast.LENGTH_SHORT).show();
+        if(!checkValidEmail(stu_email) && !TextUtils.isEmpty(stu_email)){
+            stu_emailView.setError("Your email is not valid");
+
         }
 
 
-        auth.signInWithEmailAndPassword(email, password)
+        stu_auth.signInWithEmailAndPassword(stu_email, stu_password)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -102,20 +102,17 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    public boolean checkValidPassword(String password){
-        return  password.length() >= 5;
+    public boolean checkValidPassword(String stu_password){
+        return  stu_password.length() >= 5;
     }
 
-    public boolean checkValidEmail(String email){
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    public boolean checkValidEmail(String stu_email){
+        return Patterns.EMAIL_ADDRESS.matcher(stu_email).matches();
     }
 
     public void redirectToSignUpPage(View view){
         Intent redirect = new Intent(LoginActivity.this, SignUpActivity.class);
         startActivity(redirect);
     }
-//    public void redirectToForgotPasswordPage(View view){
-//        Intent redirect = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
-//        startActivity(redirect);
-//    }
+
 }

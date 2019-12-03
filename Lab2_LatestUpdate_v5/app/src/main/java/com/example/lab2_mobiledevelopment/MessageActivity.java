@@ -37,19 +37,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageActivity extends AppCompatActivity {
 
-    CircleImageView profile_image;
-    TextView username;
-    FirebaseUser fuser;
-    DatabaseReference reference;
+    CircleImageView stu_profile_image;
+    TextView stu_username;
+    FirebaseUser stu_fuser;
+    DatabaseReference stu_reference;
     Intent intent;
 
-    ImageButton btn_send, btn_record;
-    EditText text_send;
+    ImageButton stu_btn_send, stu_btn_record;
+    EditText stu_textSend;
 
-    MessageAdapter messageAdapter;
-    List<Chat> mchat;
+    MessageAdapter stu_messageAdapter;
+    List<Chat> stu_mchat;
 
-    RecyclerView recyclerView;
+    RecyclerView stu_recyclerView;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
 
 
@@ -70,57 +70,58 @@ public class MessageActivity extends AppCompatActivity {
         });
 
 
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
+        stu_recyclerView = findViewById(R.id.recycler_view);
+        stu_recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        stu_recyclerView.setLayoutManager(linearLayoutManager);
 
-        profile_image = findViewById(R.id.profile_image);
-        username = findViewById(R.id.username);
-        btn_send = findViewById(R.id.btn_send);
-        btn_record = findViewById(R.id.btn_record);
-        text_send = findViewById(R.id.text_send);
+        stu_profile_image = findViewById(R.id.profile_image);
+        stu_username = findViewById(R.id.username);
+        stu_btn_send = findViewById(R.id.btn_send);
+        stu_btn_record = findViewById(R.id.btn_record);
+        stu_textSend = findViewById(R.id.text_send);
 
         intent = getIntent();
         final String userid = intent.getStringExtra("userid");
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
-        btn_record.setOnClickListener(new View.OnClickListener() {
+        stu_fuser = FirebaseAuth.getInstance().getCurrentUser();
+        stu_btn_record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startVoiceInput();            }
         });
 
-        btn_send.setOnClickListener(new View.OnClickListener() {
+        stu_btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String msg = text_send.getText().toString();
+                String msg = stu_textSend.getText().toString();
                 if(!msg.equals("")){
-                    sendMessage(fuser.getUid(), userid, msg);
+                    sendMessage(stu_fuser.getUid(), userid, msg);
                 }else {
                     Toast.makeText(MessageActivity.this, "You can't send an empty message", Toast.LENGTH_LONG).show();
                 }
-                text_send.setText("");
+                stu_textSend.setText("");
             }
         });
 
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+        stu_fuser = FirebaseAuth.getInstance().getCurrentUser();
+        stu_reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
 
-        reference.addValueEventListener(new ValueEventListener() {
+        stu_reference.addValueEventListener(new ValueEventListener() {
                @Override
                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                      User user = dataSnapshot.getValue(User.class);
-                     username.setText(user.getFirstname() + " " + user.getLastname());
-//                     if (user.getImageURL().equals("default")) {
-//                         profile_image.setImageResource(R.mipmap.avatar6);
-//                     }else {
-//                         Glide.with(MessageActivity.this).load(user.getImageURL()).into(profile_image);
-//                     }
-                        if(!user.getImageURL().equals(null)){
-                            Glide.with(MessageActivity.this).load(user.getImageURL()).into(profile_image);
-                        }
-                     readMessages(fuser.getUid(), userid, user.getImageURL());
+                     stu_username.setText(user.getFirstname() + " " + user.getLastname());
+
+
+                   if (user.getImageURL().equals("Default")){
+                       stu_profile_image.setImageResource(R.mipmap.avatar6);
+                   }
+                   else if (!user.getImageURL().equals(null)){
+                        Glide.with(MessageActivity.this).load(user.getImageURL()).into(stu_profile_image);
+                    }
+
+                     readMessages(stu_fuser.getUid(), userid, user.getImageURL());
                }
 
                @Override
@@ -149,43 +150,43 @@ public class MessageActivity extends AppCompatActivity {
             case REQ_CODE_SPEECH_INPUT: {
                 if (resultCode == RESULT_OK && null != data) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    text_send.setText(result.get(0));
+                    stu_textSend.setText(result.get(0));
                 }
                 break;
             }
         }
     }
         private void sendMessage(String sender, String receiver, String message){
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference stu_reference = FirebaseDatabase.getInstance().getReference();
 
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("sender", sender);
             hashMap.put("receiver", receiver);
             hashMap.put("message", message);
 
-            reference.child("Chats").push().setValue(hashMap);
+            stu_reference.child("Chats").push().setValue(hashMap);
 
         }
 
     private void readMessages(final String myid, final String userid, final String imageurl) {
-        mchat = new ArrayList<>();
+        stu_mchat = new ArrayList<>();
 
-        reference = FirebaseDatabase.getInstance().getReference("Chats");
-        reference.addValueEventListener(new ValueEventListener() {
+        stu_reference = FirebaseDatabase.getInstance().getReference("Chats");
+        stu_reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mchat.clear();
+                stu_mchat.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Chat chat = snapshot.getValue(Chat.class);
 
                     if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid) ||
                             chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
 
-                        mchat.add(chat);
+                        stu_mchat.add(chat);
                     }
 
-                    messageAdapter = new MessageAdapter(MessageActivity.this, mchat, imageurl);
-                    recyclerView.setAdapter(messageAdapter);
+                    stu_messageAdapter = new MessageAdapter(MessageActivity.this, stu_mchat, imageurl);
+                    stu_recyclerView.setAdapter(stu_messageAdapter);
                 }
             }
 

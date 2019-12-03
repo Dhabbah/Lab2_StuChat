@@ -1,56 +1,56 @@
 package com.example.lab2_mobiledevelopment.model;
 
 public class User {
-    private String id;
-    private String Firstname;
-    private String Lastname;
-    private String imageURL;
-    private String phonenumber;
+    private String stu_id;
+    private String stu_Firstname;
+    private String stu_Lastname;
+    private String stu_imageURL;
+    private String stu_phonenumber;
 
-    public User(String id, String Firstname, String Lastname, String imageURL, String phonenumber) {
-        this.id = id;
-        this.Firstname = Firstname;
-        this.Lastname = Lastname;
-        this.imageURL = imageURL;
-        this.phonenumber = phonenumber;
+    public User(String stu_id, String stu_Firstname, String stu_Lastname, String stu_imageURL, String stu_phonenumber) {
+        this.stu_id = stu_id;
+        this.stu_Firstname = stu_Firstname;
+        this.stu_Lastname = stu_Lastname;
+        this.stu_imageURL = stu_imageURL;
+        this.stu_phonenumber = stu_phonenumber;
 
     }
 
     public User() {
     }
-    public String getPhonenumber(){return phonenumber;}
-    public void setPhonenumber(String phonenumber){
-        this.phonenumber = phonenumber;
+    public String getPhonenumber(){return stu_phonenumber;}
+    public void setPhonenumber(String stu_phonenumber){
+        this.stu_phonenumber = stu_phonenumber;
     }
     public String getId() {
-        return id;
+        return stu_id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String stu_id) {
+        this.stu_id = stu_id;
     }
 
     public String getFirstname() {
-        return Firstname;
+        return stu_Firstname;
     }
 
     public void setFirstname(String Firstname) {
-        this.Firstname = Firstname;
+        this.stu_Firstname = Firstname;
     }
 
     public String getLastname() {
-        return Lastname;
+        return stu_Lastname;
     }
 
-    public void setLastname(String Lastname) {
-        this.Lastname = Lastname;
+    public void setLastname(String stu_Lastname) {
+        this.stu_Lastname = stu_Lastname;
     }
 
     public String getImageURL() {
-        return imageURL;
+        return stu_imageURL;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public void setImageURL(String stu_imageURL) {
+        this.stu_imageURL = stu_imageURL;
     }
 }

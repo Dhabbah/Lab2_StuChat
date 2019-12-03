@@ -26,46 +26,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PublicFragment extends Fragment {
-    private RecyclerView recyclerView;
-    private UserAdapter userAdapter;
-    private List<User> mUsers;
+    private RecyclerView stu_recyclerView;
+    private UserAdapter stu_userAdapter;
+    private List<User> stu_mUsers;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_public, container, false);
+        View stu_view = inflater.inflate(R.layout.fragment_public, container, false);
 
-        recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL)); //line
+        stu_recyclerView = stu_view.findViewById(R.id.recycler_view);
+        stu_recyclerView.setHasFixedSize(true);
+        stu_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        stu_recyclerView.addItemDecoration(new DividerItemDecoration(stu_recyclerView.getContext(), DividerItemDecoration.VERTICAL)); //line
 
-        mUsers = new ArrayList<>();
+        stu_mUsers = new ArrayList<>();
 
-        readUsers();
+        stu_readUsers();
 
 
-        return view;
+        return stu_view;
     }
 
-    private void readUsers() {
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+    private void stu_readUsers() {
+        final FirebaseUser stu_firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference stu_reference = FirebaseDatabase.getInstance().getReference("Users");
 
-        reference.addValueEventListener(new ValueEventListener() {
+        stu_reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mUsers.clear();
+                stu_mUsers.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
+                    User stu_user = snapshot.getValue(User.class);
 
-//                    assert  user != null;
+//                    assert  stu_user != null;
 //                    assert firebaseUser != null;
-                    if (!user.getId().equals(firebaseUser.getUid())){
-                        mUsers.add(user);
+                    if (!stu_user.getId().equals(stu_firebaseUser.getUid())){
+                        stu_mUsers.add(stu_user);
                     }
                 }
 
-                userAdapter = new UserAdapter(getContext(), mUsers);
-                recyclerView.setAdapter(userAdapter);
+                stu_userAdapter = new UserAdapter(getContext(), stu_mUsers);
+                stu_recyclerView.setAdapter(stu_userAdapter);
             }
 
             @Override
