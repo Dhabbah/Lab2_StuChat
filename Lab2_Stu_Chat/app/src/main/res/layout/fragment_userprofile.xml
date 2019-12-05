@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:background="#fff"
+    tools:context=".Fragment.UserProfileFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ly1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/profile_image"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:src="@mipmap/ic_launcher"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/username"
+                android:text="username"
+                android:layout_below="@+id/profile_image"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/up_firstname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:padding="10dp"
+                android:inputType="textPersonName"
+                android:layout_below="@+id/username"
+                android:hint="First Name"
+                android:drawableRight="@drawable/user"
+                 />
+            <EditText
+                android:id="@+id/up_lastname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/user"
+                android:ems="10"
+                android:hint="Last Name"
+                android:layout_below="@+id/up_firstname"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                 />
+
+            <EditText
+                android:id="@+id/up_phonenumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/up_lastname"
+                android:ems="10"
+                android:hint="Enter Phone Number"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                 />
+
+            <Button
+            android:id="@+id/stu_btnUpdate"
+            style="@style/DefaultButtonText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+                android:layout_below="@+id/up_phonenumber"
+
+                android:background="#86C881"
+            android:text="Update"
+                android:textColor="#000"/>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
