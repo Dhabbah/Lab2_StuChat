@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/nav_chats"
+        android:title="Chats"
+        android:icon="@drawable/conversation" />
+
+    <item android:id="@+id/nav_Public"
+        android:title="Public"
+        android:icon="@drawable/userprofile"/>
+
+    <item android:id="@+id/nav_Contacts"
+        android:title="Contacts"
+        android:icon="@drawable/calls" />
+
+<!--    <item android:id="@+id/nav_profile"-->
+<!--        android:title="Profile"-->
+<!--        android:icon="@drawable/userprofile" />-->
+</menu>
+    <!-- This menu is for the bottom navigation bar -->
